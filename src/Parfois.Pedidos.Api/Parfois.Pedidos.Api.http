@@ -1,6 +1,52 @@
-@Parfois.Pedidos.Api_HostAddress = http://localhost:5081
+@host = http://localhost:5081
 
-GET {{Parfois.Pedidos.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### Criar o pedido
+POST {{host}}/api/pedido
+Content-Type: application/json
 
-###
+{
+  "pedido": "123456",
+  "itens": [
+    { "descricao": "Item A", "precoUnitario": 10, "qtd": 1 },
+    { "descricao": "Item B", "precoUnitario": 5, "qtd": 2 }
+  ]
+}
+
+### Listar pedidos
+GET {{host}}/api/pedido
+
+### #1 APROVADO
+POST {{host}}/api/status
+Content-Type: application/json
+
+{ "status": "APROVADO", "itensAprovados": 3, "valorAprovado": 20, "pedido": "123456" }
+
+### #2 APROVADO_VALOR_A_MENOR
+POST {{host}}/api/status
+Content-Type: application/json
+
+{ "status": "APROVADO", "itensAprovados": 3, "valorAprovado": 10, "pedido": "123456" }
+
+### #3 APROVADO_VALOR_A_MAIOR + APROVADO_QTD_A_MAIOR
+POST {{host}}/api/status
+Content-Type: application/json
+
+{ "status": "APROVADO", "itensAprovados": 4, "valorAprovado": 21, "pedido": "123456" }
+
+### #4 APROVADO_QTD_A_MENOR
+POST {{host}}/api/status
+Content-Type: application/json
+
+{ "status": "APROVADO", "itensAprovados": 2, "valorAprovado": 20, "pedido": "123456" }
+
+### #5 REPROVADO
+POST {{host}}/api/status
+Content-Type: application/json
+
+{ "status": "REPROVADO", "itensAprovados": 0, "valorAprovado": 0, "pedido": "123456" }
+
+### #6 CODIGO_PEDIDO_INVALIDO
+POST {{host}}/api/status
+Content-Type: application/json
+
+{ "status": "APROVADO", "itensAprovados": 3, "valorAprovado": 20, "pedido": "123456-N" }
